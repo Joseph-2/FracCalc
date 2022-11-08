@@ -1,8 +1,13 @@
+import java.util.Scanner;
 public class FracCalc {
 
     public static void main(String[] args) 
     {
         // TODO: Read the input from the user and call produceAnswer with an equation
+        Scanner in = new Scanner(System.in);
+        System.out.println("enter equation: ");
+        String equation = in.nextLine();
+        FracCalc.produceAnswer(equation);
 
     }
     
@@ -17,8 +22,14 @@ public class FracCalc {
     public static String produceAnswer(String input)
     { 
         // TODO: Implement this function to produce the solution to the input
-        
-        return "";
+        Scanner equation = new Scanner(input);
+        equation.useDelimiter(" ");
+
+        String fractionOne = equation.next();
+        String operator = equation.next();
+        String fractionTwo = equation.next();
+
+        return fractionTwo;
     }
 
     // TODO: Fill in the space below with any helper methods that you think you will need
