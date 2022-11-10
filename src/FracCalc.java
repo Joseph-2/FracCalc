@@ -5,9 +5,13 @@ public class FracCalc {
     {
         // TODO: Read the input from the user and call produceAnswer with an equation
         Scanner in = new Scanner(System.in);
-        System.out.println("enter equation: ");
-        String equation = in.nextLine();
-        FracCalc.produceAnswer(equation);
+        boolean quit = false;
+        while(!quit) {
+            System.out.println("enter equation: ");
+            String equation = in.nextLine();
+            FracCalc.produceAnswer(equation);
+            if(equation.equals("quit")){quit = true;}
+        }
 
     }
     
@@ -22,16 +26,31 @@ public class FracCalc {
     public static String produceAnswer(String input)
     { 
         // TODO: Implement this function to produce the solution to the input
-        Scanner equation = new Scanner(input);
-        equation.useDelimiter(" ");
-
-        String fractionOne = equation.next();
-        String operator = equation.next();
-        String fractionTwo = equation.next();
-
-        return fractionTwo;
+        String[] parsed = parseFraction(input);
+        return "whole: " + parsed[0] + "";
     }
 
     // TODO: Fill in the space below with any helper methods that you think you will need
-    
+    public static String[] parseFraction(String input){
+        Scanner fraction = new Scanner(input);
+        String wholeOne = "";
+        String wholeTwo = "";
+        fraction.useDelimiter(" ");
+        String fractionOne = fraction.next();
+        String fractionTwo = fraction.next();
+
+        if(fractionOne.contains("_")) {
+            Scanner fracOne = new Scanner(fractionOne);
+            fracOne.useDelimiter("_");
+            wholeOne += fracOne.next();
+        }else{wholeOne += "0";}
+
+        if(fractionTwo.contains("_")) {
+            Scanner fracTwo = new Scanner(fractionTwo);
+            fracTwo.useDelimiter("_");
+            wholeTwo += fracTwo.next();
+        }else{wholeTwo += "0";}
+
+        return new String[]{wholeOne,fractionOne,wholeTwo,fractionTwo};
+    }
 }
