@@ -32,7 +32,7 @@ public class FracCalc {
 
     // TODO: Fill in the space below with any helper methods that you think you will need
     public static int[] parseFraction(String input){
-        //declaring all variables that will be returned in the array
+        //declaring all variables that will be returned
         int wholeOne;
         int wholeTwo;
         String[] split = input.split(" ");
@@ -80,27 +80,27 @@ public class FracCalc {
             wholeOne = Integer.parseInt(fractionOne);
         }
         return new int[]{wholeOne,fracOneNum,fracOneDen,wholeTwo,fracTwoNum,fracTwoDen};
+    }
 
-        /*Scanner fraction = new Scanner(input);
-        String wholeOne = "";
-        String wholeTwo = "";
-        fraction.useDelimiter(" ");
-        String fractionOne = fraction.next();
-        String operator = fraction.next();
-        String fractionTwo = fraction.next();
+    public static int[] math(String symbol, int numer1, int denom1, int wholeNum1, int numer2, int denom2, int wholeNum2){
+        numer1 += (wholeNum1 * denom1);
+        numer2 += (wholeNum2 * denom2);
+        int wholeProduct = 0;
+        int numProduct = 0;
+        int denomProduct;
 
-        if(fractionOne.contains("_")&&fractionOne.contains("/")) {
-            Scanner fracOne = new Scanner(fractionOne);
-            fracOne.useDelimiter("_");
-            wholeOne += fracOne.next();
-        }else{wholeOne += "0";}
+        if (symbol.equals("+") && denom1 != denom2){
+            numer1 *=denom2;
+            numer2 *=denom1;
+            numProduct = (numer1+numer2);
+            denomProduct = (denom1*denom2);
+        }else{
+            numProduct += (numer1+numer2);
+            denomProduct = denom1;
+        }
+        return new int[]{wholeProduct,numProduct,denomProduct};
+    }
+    public static int toProper(int wholeNumber, int numer, int denom){
 
-        if(fractionTwo.contains("_")) {
-            Scanner fracTwo = new Scanner(fractionTwo);
-            fracTwo.useDelimiter("_");
-            wholeTwo += fracTwo.next();
-        }else{wholeTwo += "0";}
-
-        return new String[]{wholeOne,fractionOne,operator,wholeTwo,fractionTwo};*/
     }
 }
