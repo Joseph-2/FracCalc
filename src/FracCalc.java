@@ -32,6 +32,7 @@ public class FracCalc {
 
     // TODO: Fill in the space below with any helper methods that you think you will need
     public static int[] parseFraction(String input){
+        //declaring all variables that will be returned in the array
         int wholeOne;
         int wholeTwo;
         String[] split = input.split(" ");
@@ -42,12 +43,15 @@ public class FracCalc {
         int fracTwoNum = 0;
         int fracTwoDen = 1;
 
+        //checks if the fraction input is not just a whole number
         if(fractionTwo.contains("/")){
+            //checks if a fraction contains a whole number and parses it accordingly
             if(fractionTwo.contains("_")){
                 String[] whole2Split = fractionTwo.split("_");
                 wholeTwo = Integer.parseInt(whole2Split[0]);
                 fractionTwo = whole2Split[1];
             }else{
+                //if fraction does not contain a whole number, set it to zero
                 wholeTwo = 0;
             }
             String[] num2Split = fractionTwo.split("/");
