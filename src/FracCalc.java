@@ -28,19 +28,6 @@ public class FracCalc {
         // TODO: Implement this function to produce the solution to the input
         int[] parsed = parseFraction(input);
         return "whole:" + parsed[3] + " numerator:" + parsed[4] + " denominator:" + parsed[5];
-        /*String[] parsed = parseFraction(input);
-        String[] fractionOne = parsed[1].split("/");
-        String[] fractionTwo = parsed[3].split("/");
-
-        int fracOneWhole = Integer.parseInt(parsed[0]);
-        int fracOneNum = Integer.parseInt(fractionOne[0]);
-        int fracOneDenom = Integer.parseInt(fractionOne[1]);
-
-        int fracTwoWhole = Integer.parseInt(parsed[3]);
-        int fracTwoNum = Integer.parseInt(fractionTwo[0]);
-        int fracTwoDenom = Integer.parseInt(fractionTwo[1]);
-
-        return "whole:" + fracTwoWhole + " numerator:"+fracTwoNum+" ";*/
     }
 
     // TODO: Fill in the space below with any helper methods that you think you will need
