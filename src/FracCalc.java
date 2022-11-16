@@ -9,8 +9,8 @@ public class FracCalc {
         while(!quit) {
             System.out.println("enter equation: ");
             String equation = in.nextLine();
-            FracCalc.produceAnswer(equation);
             if(equation.equals("quit")){quit = true;}
+            else{FracCalc.produceAnswer(equation);}
         }
 
     }
