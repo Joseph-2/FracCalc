@@ -27,20 +27,27 @@ public class FracCalc {
     { 
         // TODO: Implement this function to produce the solution to the input
         int[] parsed = parseFraction(input);
-        return "whole:" + parsed[3] + " numerator:" + parsed[4] + " denominator:" + parsed[5];
+        String[] operator = input.split(" ");
+        int[] product = math(operator[1],parsed[0],parsed[1],parsed[2],parsed[3],parsed[4],parsed[5]);
+
+        if (product[2] == 1){
+            return String.valueOf(product[1]);
+        }else {
+            return product[0] + "_" + product[1] + "/" + product[2];
+        }
     }
 
     // TODO: Fill in the space below with any helper methods that you think you will need
     public static int[] parseFraction(String input){
-        //declaring all variables that will be returned
+        //declaring all variables that will be returned/used
         int wholeOne;
         int wholeTwo;
         String[] split = input.split(" ");
         String fractionOne = split[0];
         String fractionTwo = split[2];
-        int fracOneNum = 0;
+        int fracOneNum;
         int fracOneDen = 1;
-        int fracTwoNum = 0;
+        int fracTwoNum;
         int fracTwoDen = 1;
 
         //checks if the fraction input is not just a whole number
@@ -54,14 +61,17 @@ public class FracCalc {
                 //if fraction does not contain a whole number, set it to zero
                 wholeTwo = 0;
             }
+            //splits fraction and assigns numerator and denominator to new split values
             String[] num2Split = fractionTwo.split("/");
             fracTwoNum = Integer.parseInt(num2Split[0]);
             fracTwoDen = Integer.parseInt(num2Split[1]);
 
         }else{
-            wholeTwo = Integer.parseInt(fractionTwo);
+            //if it is just a whole number, set the numerator to zero and keep the denominator one
+            fracTwoNum = Integer.parseInt(fractionTwo);
+            wholeTwo = 0;
         }
-
+        //same as above
         if(fractionOne.contains("/")){
 
             if(fractionOne.contains("_")){
@@ -77,30 +87,47 @@ public class FracCalc {
             fracOneDen = Integer.parseInt(num1Split[1]);
 
         }else{
-            wholeOne = Integer.parseInt(fractionOne);
+            fracOneNum = Integer.parseInt(fractionOne);
+            wholeOne = 0;
         }
+        //returns both fractions fully parsed
         return new int[]{wholeOne,fracOneNum,fracOneDen,wholeTwo,fracTwoNum,fracTwoDen};
     }
 
-    public static int[] math(String symbol, int numer1, int denom1, int wholeNum1, int numer2, int denom2, int wholeNum2){
+    public static int[] math(String symbol, int wholeNum1, int numer1, int denom1, int wholeNum2, int numer2, int denom2){
+        //first changes to improper fractions
         numer1 += (wholeNum1 * denom1);
         numer2 += (wholeNum2 * denom2);
+        //declares items that will be returned in the list
         int wholeProduct = 0;
         int numProduct = 0;
-        int denomProduct;
+        int denomProduct = 1;
+        //if it is addition, do the added method
+        if (symbol.equals("+")){
+            int[] added = add(numer1,denom1,numer2,denom2);
 
-        if (symbol.equals("+") && denom1 != denom2){
-            numer1 *=denom2;
-            numer2 *=denom1;
-            numProduct = (numer1+numer2);
-            denomProduct = (denom1*denom2);
-        }else{
-            numProduct += (numer1+numer2);
-            denomProduct = denom1;
         }
         return new int[]{wholeProduct,numProduct,denomProduct};
     }
-    public static int toProper(int wholeNumber, int numer, int denom){
+    public static int reduce(int numer, int denom){
+        int reducedWhole = numer/denom;
 
+        return 1;
     }
+
+    public static int[] add(int numer1, int denom1, int numer2, int denom2){
+        int numProduct;
+        int denomProduct;
+        if(denom1!=denom2) {
+            numer1 *= denom2;
+            numer2 *= denom1;
+            numProduct = (numer1 + numer2);
+            denomProduct = (denom1 * denom2);
+        }else{
+            numProduct = numer1+numer2;
+            denomProduct = denom1;
+        }
+        return new int[]{numProduct, denomProduct};
+    }
+
 }
