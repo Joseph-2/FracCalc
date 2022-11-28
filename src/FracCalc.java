@@ -96,7 +96,13 @@ public class FracCalc {
 
     public static int[] math(String symbol, int wholeNum1, int numer1, int denom1, int wholeNum2, int numer2, int denom2){
         //first changes to improper fractions
+        if (wholeNum1 < 0){
+            numer1 *= -1;
+        }
         numer1 += (wholeNum1 * denom1);
+        if (wholeNum2 < 0){
+            numer2 *= -1;
+        }
         numer2 += (wholeNum2 * denom2);
         //declares items that will be returned in the list
         int wholeProduct = 0;
@@ -105,7 +111,23 @@ public class FracCalc {
         //if it is addition, do the added method
         if (symbol.equals("+")){
             int[] added = add(numer1,denom1,numer2,denom2);
-
+            numProduct = added[0];
+            denomProduct = added[1];
+        }
+        if (symbol.equals("-")){
+            int[] subtracted = subtract(numer1, denom1, numer2, denom2);
+            numProduct = subtracted[0];
+            denomProduct = subtracted[1];
+        }
+        if (symbol.equals("*")){
+            int[] multiplied = multiply(numer1,denom1,numer2,denom2);
+            numProduct = multiplied[0];
+            denomProduct = multiplied[1];
+        }
+        if (symbol.equals("/")){
+            int[] divided = divide(numer1,denom1,numer2,denom2);
+            numProduct = divided[0];
+            denomProduct = divided[1];
         }
         return new int[]{wholeProduct,numProduct,denomProduct};
     }
@@ -115,6 +137,36 @@ public class FracCalc {
         return 1;
     }
 
+    public static int[] subtract(int numer1, int denom1, int numer2, int denom2){
+        int numProduct;
+        int denomProduct;
+        if(denom1!=denom2) {
+            numer1 *= denom2;
+            numer2 *= denom1;
+            numProduct = (numer1 - numer2);
+            denomProduct = (denom1 * denom2);
+        }else{
+            numProduct = numer1-numer2;
+            denomProduct = denom1;
+        }
+        return new int[]{numProduct, denomProduct};
+    }
+
+    public static int[] divide(int numer1, int denom1, int numer2, int denom2){
+        int numProduct;
+        int denomProduct;
+        numProduct = (numer1 * denom2);
+        denomProduct = (numer2 * denom1);
+        return new int[]{numProduct,denomProduct};
+    }
+
+    public static int[] multiply(int numer1, int denom1, int numer2, int denom2){
+        int numProduct;
+        int denomProduct;
+        numProduct = (numer1 * numer2);
+        denomProduct = (denom1 * denom2);
+        return new int[]{numProduct,denomProduct};
+    }
     public static int[] add(int numer1, int denom1, int numer2, int denom2){
         int numProduct;
         int denomProduct;
