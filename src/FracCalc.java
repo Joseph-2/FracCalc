@@ -26,9 +26,13 @@ public class FracCalc {
     public static String produceAnswer(String input)
     { 
         // TODO: Implement this function to produce the solution to the input
-        int[] parsed = parseFraction(input);
-        String[] operator = input.split(" ");
-        int[] product = math(operator[1],parsed[0],parsed[1],parsed[2],parsed[3],parsed[4],parsed[5]);
+        //int[] parsed = parseFraction(input);
+        String[] split = input.split(" ");
+        int[] frac1Parsed = parseFraction(split[0]);
+        String operator = split[1];
+        int[] frac2Parsed = parseFraction(split[2]);
+        int[] product = math(operator,frac1Parsed[0],frac1Parsed[1],frac1Parsed[2],frac2Parsed[0],
+                frac2Parsed[1],frac2Parsed[2]);
 
         if (product[2] == 1){
             return String.valueOf(product[1]);
@@ -39,6 +43,9 @@ public class FracCalc {
         else if(product[2] == 1 || product[2] == -1){
             return ""+(product[1]/product[2]);
         }
+        else if(product[0] == 0){
+            return product[1] + "/" + product[2];
+    }
         else {
             return product[0] + "_" + product[1] + "/" + product[2];
         }
@@ -47,39 +54,39 @@ public class FracCalc {
     // TODO: Fill in the space below with any helper methods that you think you will need
     public static int[] parseFraction(String input){
         //declaring all variables that will be returned/used
-        int wholeOne;
+        //int wholeOne;
         int wholeTwo;
-        String[] split = input.split(" ");
-        String fractionOne = split[0];
-        String fractionTwo = split[2];
-        int fracOneNum;
-        int fracOneDen = 1;
+        //String[] split = input.split(" ");
+        //String fractionOne = split[0];
+        String fraction = input;
+        //int fracOneNum;
+        //int fracOneDen = 1;
         int fracTwoNum;
         int fracTwoDen = 1;
 
         //checks if the fraction input is not just a whole number
-        if(fractionTwo.contains("/")){
+        if(input.contains("/")){
             //checks if a fraction contains a whole number and parses it accordingly
-            if(fractionTwo.contains("_")){
-                String[] whole2Split = fractionTwo.split("_");
-                wholeTwo = Integer.parseInt(whole2Split[0]);
-                fractionTwo = whole2Split[1];
+            if(input.contains("_")){
+                String[] wholeSplit = input.split("_");
+                wholeTwo = Integer.parseInt(wholeSplit[0]);
+                fraction = wholeSplit[1];
             }else{
                 //if fraction does not contain a whole number, set it to zero
                 wholeTwo = 0;
             }
             //splits fraction and assigns numerator and denominator to new split values
-            String[] num2Split = fractionTwo.split("/");
-            fracTwoNum = Integer.parseInt(num2Split[0]);
-            fracTwoDen = Integer.parseInt(num2Split[1]);
+            String[] numSplit = fraction.split("/");
+            fracTwoNum = Integer.parseInt(numSplit[0]);
+            fracTwoDen = Integer.parseInt(numSplit[1]);
 
         }else{
             //if it is just a whole number, set the numerator to zero and keep the denominator one
-            fracTwoNum = Integer.parseInt(fractionTwo);
+            fracTwoNum = Integer.parseInt(input);
             wholeTwo = 0;
         }
         //same as above
-        if(fractionOne.contains("/")){
+        /*if(fractionOne.contains("/")){
 
             if(fractionOne.contains("_")){
                 String[] whole1Split = fractionOne.split("_");
@@ -96,9 +103,10 @@ public class FracCalc {
         }else{
             fracOneNum = Integer.parseInt(fractionOne);
             wholeOne = 0;
-        }
+        }*/
         //returns both fractions fully parsed
-        return new int[]{wholeOne,fracOneNum,fracOneDen,wholeTwo,fracTwoNum,fracTwoDen};
+        //return new int[]{wholeOne,fracOneNum,fracOneDen,wholeTwo,fracTwoNum,fracTwoDen};
+        return new int[]{wholeTwo,fracTwoNum,fracTwoDen};
     }
 
     public static int[] math(String symbol, int wholeNum1, int numer1, int denom1, int wholeNum2, int numer2, int denom2){
@@ -136,12 +144,28 @@ public class FracCalc {
             numProduct = divided[0];
             denomProduct = divided[1];
         }
-        return new int[]{wholeProduct,numProduct,denomProduct};
+        //if(denomProduct < 0){denomProduct *= -1;}
+        for(int i = 0; numProduct > denomProduct; i++){
+            if (numProduct < 0){
+                numProduct += denomProduct;
+                wholeProduct = (i*-1)-1;
+            }
+            else{
+                numProduct -= denomProduct;
+                wholeProduct = i+1 ;
+            }
+        }
+        int GCD = euclidGCD(numProduct,denomProduct);
+        return new int[]{wholeProduct,numProduct/GCD,denomProduct/GCD};
     }
-    public static int reduce(int numer, int denom){
+    public static int euclidGCD(int num1,int num2){
+        if (num2==0){return num1;}
+        return euclidGCD(num2,num1%num2);
+    }
+    public static int[] reduce(int numer, int denom){
         int reducedWhole = numer/denom;
 
-        return 1;
+        return new int[]{1};
     }
 
     public static int[] subtract(int numer1, int denom1, int numer2, int denom2){
