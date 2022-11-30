@@ -32,7 +32,14 @@ public class FracCalc {
 
         if (product[2] == 1){
             return String.valueOf(product[1]);
-        }else {
+        }
+        else if(product[1] == 0){
+            return "0";
+        }
+        else if(product[2] == 1 || product[2] == -1){
+            return ""+(product[1]/product[2]);
+        }
+        else {
             return product[0] + "_" + product[1] + "/" + product[2];
         }
     }
@@ -181,5 +188,4 @@ public class FracCalc {
         }
         return new int[]{numProduct, denomProduct};
     }
-
 }
