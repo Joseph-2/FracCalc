@@ -6,6 +6,7 @@ public class FracCalc {
         // TODO: Read the input from the user and call produceAnswer with an equation
         Scanner in = new Scanner(System.in);
         boolean quit = false;
+        //continues asking for input until sentinel value is entered
         while(!quit) {
             System.out.println("enter equation: ");
             String equation = in.nextLine();
@@ -26,24 +27,30 @@ public class FracCalc {
     public static String produceAnswer(String input)
     { 
         // TODO: Implement this function to produce the solution to the input
-        //int[] parsed = parseFraction(input);
+        //splits input by whitespace to get both the values as well as the operator
         String[] split = input.split(" ");
+        //puts first fractions into the parseFraction method to return an array
+        //that will have the separated values of the fraction
         int[] frac1Parsed = parseFraction(split[0]);
-        String operator = split[1];
         int[] frac2Parsed = parseFraction(split[2]);
+        String operator = split[1];
+        //feeds newly parsed fractions as well as the operator into the math method, which will calculate
+        //an answer based on the operator
         int[] product = math(operator,frac1Parsed[0],frac1Parsed[1],frac1Parsed[2],frac2Parsed[0],
                 frac2Parsed[1],frac2Parsed[2]);
-
+        //returns just a whole number in the case that it evenly divides
         if (product[2] == 1){
             return String.valueOf(product[0]);
         }
+        //returns zero in the case that any zero is present during multiplication
         else if(product[1] == 0&&product[0] == 0){
             return "0";
         }
-
+        //returns just a fraction if there are no whole numbers
         else if(product[0] == 0){
             return product[1] + "/" + product[2];
-    }
+        }
+        //returns a fraction and a whole number in the case that there is a whole number present
         else {
             return product[0] + "_" + product[1] + "/" + product[2];
         }
@@ -52,37 +59,35 @@ public class FracCalc {
     // TODO: Fill in the space below with any helper methods that you think you will need
     public static int[] parseFraction(String input){
         //declaring all variables that will be returned/used
-        //int wholeOne;
-        int wholeTwo;
         String fraction = input;
-        int fracTwoNum;
-        int fracTwoDen = 1;
+        int wholeParsed;
+        int parsedNum;
+        int parsedDenom = 1;
 
         //checks if the fraction input is not just a whole number
         if(input.contains("/")){
             //checks if a fraction contains a whole number and parses it accordingly
             if(input.contains("_")){
                 String[] wholeSplit = input.split("_");
-                wholeTwo = Integer.parseInt(wholeSplit[0]);
+                wholeParsed = Integer.parseInt(wholeSplit[0]);
                 fraction = wholeSplit[1];
             }else{
                 //if fraction does not contain a whole number, set it to zero
-                wholeTwo = 0;
+                wholeParsed = 0;
             }
             //splits fraction and assigns numerator and denominator to new split values
             String[] numSplit = fraction.split("/");
-            fracTwoNum = Integer.parseInt(numSplit[0]);
-            fracTwoDen = Integer.parseInt(numSplit[1]);
+            parsedNum = Integer.parseInt(numSplit[0]);
+            parsedDenom = Integer.parseInt(numSplit[1]);
 
         }else{
             //if it is just a whole number, set the numerator to zero and keep the denominator one
-            fracTwoNum = Integer.parseInt(input);
-            wholeTwo = 0;
+            parsedNum = Integer.parseInt(input);
+            wholeParsed = 0;
         }
         //same as above
-        //returns both fractions fully parsed
-        //return new int[]{wholeOne,fracOneNum,fracOneDen,wholeTwo,fracTwoNum,fracTwoDen};
-        return new int[]{wholeTwo,fracTwoNum,fracTwoDen};
+        //returns fraction fully parsed
+        return new int[]{wholeParsed,parsedNum,parsedDenom};
     }
 
     public static int[] math(String symbol, int wholeNum1, int numer1, int denom1, int wholeNum2, int numer2, int denom2){
@@ -99,7 +104,7 @@ public class FracCalc {
         int wholeProduct;
         int numProduct = 0;
         int denomProduct = 1;
-        //if it is addition, do the added method
+        //if it is addition, do the added method and change numProduct and denomProduct accordingly
         if (symbol.equals("+")){
             int[] added = add(numer1,denom1,numer2,denom2);
             numProduct = added[0];
@@ -121,10 +126,14 @@ public class FracCalc {
             denomProduct = divided[1];
         }
         wholeProduct = numProduct/denomProduct;
-        denomProduct = Math.abs(denomProduct);
-        numProduct = Math.abs(numProduct) - Math.abs(wholeProduct*denomProduct);
+        if (Math.abs(numProduct) > denomProduct) {
+            numProduct = numProduct - wholeProduct * denomProduct;
+        }
         int GCD = euclidGCD(numProduct,denomProduct);
-        return new int[]{wholeProduct,numProduct/GCD,Math.abs(denomProduct/GCD)};
+        if(wholeProduct < 0) {
+            return new int[]{wholeProduct, Math.abs(numProduct / GCD), Math.abs(denomProduct / GCD)};
+        }
+        else{return new int[]{wholeProduct, numProduct / GCD, Math.abs(denomProduct / GCD)};}
     }
     public static int euclidGCD(int num1,int num2){
         if (num2==0){return num1;}
